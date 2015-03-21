@@ -3,3 +3,8 @@
 name = "ForcedFracture"
 version = "0.0.1"
 authors = ["walter"]
+
+
+[dependencies.glfw]
+git = "https://github.com/bjz/glfw-rs.git"
+default-features = false

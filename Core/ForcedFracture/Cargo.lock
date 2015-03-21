@@ -1,4 +1,38 @@
 [root]
 name = "ForcedFracture"
 version = "0.0.1"
+dependencies = [
+ "glfw 0.0.6 (git+https://github.com/bjz/glfw-rs.git)",
+]
+
+[[package]]
+name = "bitflags"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "glfw"
+version = "0.0.6"
+source = "git+https://github.com/bjz/glfw-rs.git#399cef3fb2010f33a12a42399e9cb52e5c1ee65e"
+dependencies = [
+ "bitflags 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libc 0.1.3 (registry+https://github.com/rust-lang/crates.io-index)",
+ "log 0.2.5 (registry+https://github.com/rust-lang/crates.io-index)",
+ "semver 0.1.16 (registry+https://github.com/rust-lang/crates.io-index)",
+]
+
+[[package]]
+name = "libc"
+version = "0.1.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "log"
+version = "0.2.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+
+[[package]]
+name = "semver"
+version = "0.1.16"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 
