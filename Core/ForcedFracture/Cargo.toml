@@ -4,7 +4,12 @@ name = "ForcedFracture"
 version = "0.0.1"
 authors = ["walter"]
 
+[dev-dependencies.FracEngine]
+path = "..\\FracEngine"
 
-[dependencies.glfw]
-git = "https://github.com/bjz/glfw-rs.git"
-default-features = false
+[dependencies]
+gl = "*"
+libc = "*"
+
+[dependencies.glium]
+git = "https://github.com/tomaka/glium"
