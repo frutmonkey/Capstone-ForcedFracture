@@ -5,7 +5,7 @@ version = "0.0.1"
 authors = ["walter"]
 
 [dev-dependencies.FracEngine]
-path = "..\\FracEngine"
+path = "../FracEngine"
 
 [dependencies]
 gl = "*"
@@ -13,3 +13,9 @@ libc = "*"
 
 [dependencies.glium]
 git = "https://github.com/tomaka/glium"
+
+[dependencies]
+glutin = "*"
+
+#[dependencies.glutin]
+#git = "https://github.com/tomaka/glutin"
