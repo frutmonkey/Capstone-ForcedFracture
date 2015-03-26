@@ -7,32 +7,36 @@ use glium::{DisplayBuild, Surface};
 use std::io::Cursor;
 
 fn main(){
+    println!("hello dark and scarry world");
+    #[derive(Copy)]
+    struct Vertex {
+        position: [f32; 2],
+        tex_coords: [f32; 2]
+    }
+
+    implement_vertex!(Vertex, position, tex_coords);
+
+
     let display = glutin::WindowBuilder::new()
         .with_dimensions(1024, 768)
         .with_title(format!("Forced Fracture"))
         .build_glium().unwrap();
 
-    let img = image::load(Cursor::new(&include_bytes!("../content/textures/actors/Full/DevDan.png")[..]),image::PNG).unwrap();
-
-    let glTex = glium::texture::CompressedTexture2d::new(&display, img);
-    
-    let vertex_buffer = {
-        #[derive(Copy)]
-        struct Vertex {
-            position: [f32; 2],
-            tex_coords: [f32; 2]
-        }
-
-        implement_vertex!(Vertex, position, tex_coords);
-        glium::VertexBuffer::new(&display,
+    let raw_rock = image::load(Cursor::new(&include_bytes!("../content/textures/blocks/surface rock.png")[..]),image::PNG).unwrap();
+    let raw_dan = image::load(Cursor::new(&include_bytes!("../content/textures/actors/Full/DevDan.png")[..]),image::PNG).unwrap();
+    println!("loaded text");
+    let rock_tex = glium::texture::CompressedTexture2d::new(&display, raw_rock);
+    let dan_tex = glium::texture::CompressedTexture2d::new(&display, raw_dan);
+    let vb1 = glium::VertexBuffer::new(&display,
                                  vec![
-                                     Vertex { position: [-1.0, -1.0], tex_coords: [0.0, 0.0] },
-                                     Vertex { position: [-1.0, 1.0], tex_coords: [0.0, 1.0] },
-                                     Vertex { position: [ 1.0, 1.0], tex_coords: [1.0, 1.0] },
-                                     Vertex { position: [ 1.0, -1.0], tex_coords: [1.0, 0.0] }
-                                 ] )
-    };
-     let index_buffer = glium::IndexBuffer::new(&display,glium::index::TriangleStrip(vec![1 as u16, 2, 0, 3]));
+                                 Vertex { position: [-0.5, -0.5], tex_coords: [0.0, 0.0] },
+                                 Vertex { position: [-0.5, 0.5], tex_coords: [0.0, 1.0] },
+                                 Vertex { position: [ 0.5, 0.5], tex_coords: [1.0, 1.0] },
+                                 Vertex { position: [ 0.5, -0.5], tex_coords: [1.0, 0.0] }
+                                 ] );
+    
+
+    let index_buffer = glium::IndexBuffer::new(&display,glium::index::TriangleStrip(vec![1 as u16, 2, 0, 3]));
 
     let program = glium::Program::from_source(&display, r"
         #version 110
@@ -53,29 +57,45 @@ fn main(){
         }
         ", None).unwrap();
 
-    loop{
-        let uniforms = uniform! {
-            matrix: [
+    let uni_rock = uniform! {
+        matrix: [
             [1.0, 0.0, 0.0, 0.0],
             [0.0, 1.0, 0.0, 0.0],
             [0.0, 0.0, 1.0, 0.0],
             [0.0, 0.0, 0.0, 1.0f32]
-            ],
-            texture: &glTex 
-        };
-        
+        ], texture: &rock_tex};
+    let uni_dan = uniform! {
+        matrix: [
+            [1.0, 0.0, 0.0, 0.0],
+            [0.0, 1.0, 0.0, 0.0],
+            [0.0, 0.0, 1.0, 0.0],
+            [0.0, 0.0, 0.0, 1.0f32]
+        ], texture: &dan_tex};
+
+    let mut t = 1.0;
+    
+    loop{ //play loop
+        let vb2 = glium::VertexBuffer::new(&display,
+                                           vec![
+                                 Vertex { position: [-1.0, 1.0], tex_coords: [0.0, 0.0] },
+                                 Vertex { position: [-1.0, 1.0], tex_coords: [0.0, 1.0] },
+                                 Vertex { position: [ 1.0, 1.0], tex_coords: [1.0, 1.0] },
+                                 Vertex { position: [ 1.0, -1.0], tex_coords: [1.0, 0.0] }
+                                           ] );
+
+
         let mut target = display.draw();
-            target.clear_color(0.0, 0.0, 0.0, 0.0);
-            target.draw(&vertex_buffer, &index_buffer, &program, &uniforms, &std::default::Default::default()).unwrap();
-            target.finish();
-            // polling and handling the events received by the window
-            for event in display.poll_events() {
-                match event {
-                    glutin::Event::Closed => return,
-                    _ => ()
-                }
+        target.clear_color(0.0, 0.0, 0.0, 0.0);
+        target.draw(&vb1, &index_buffer, &program, &uni_rock, &std::default::Default::default()).unwrap();
+        target.draw(&vb2,&index_buffer,&program, &uni_dan, &std::default::Default::default()).unwrap();
+        target.finish();
+        // polling and handling the events received by the window
+        for event in display.poll_events() {
+            match event {
+                glutin::Event::Closed => return,
+                _ => ()
             }
-
-
+        }
+        t += 0.01;
     }
 }
