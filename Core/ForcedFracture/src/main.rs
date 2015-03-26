@@ -1,28 +1,26 @@
 extern crate glutin;
+#[macro_use]
 extern crate glium;
 
 extern crate image;
-use std::old_io::BufReader;
 use glium::{DisplayBuild, Surface};
 use std::io::Cursor;
 
 fn main(){
-    //use glium::{DisplayBuild, Surface, implement_vertex};
-    use glium;
     let display = glutin::WindowBuilder::new()
         .with_dimensions(1024, 768)
         .with_title(format!("Forced Fracture"))
         .build_glium().unwrap();
 
-    //let img = image::load(BufReader::new(include_bytes!("../content/textures/actors/Full/DevDan.png")),image::PNG).unwrap();
+    let img = image::load(Cursor::new(&include_bytes!("../content/textures/actors/Full/DevDan.png")[..]),image::PNG).unwrap();
 
-    //let glTex = glium::texture::CompressedTexture2d::new(&display, img);
+    let glTex = glium::texture::CompressedTexture2d::new(&display, img);
     
     let vertex_buffer = {
         #[derive(Copy)]
         struct Vertex {
             position: [f32; 2],
-            tex_coords: [f32; 3]
+            tex_coords: [f32; 2]
         }
 
         implement_vertex!(Vertex, position, tex_coords);
@@ -35,13 +33,4 @@ fn main(){
                                  ] )
     };
     
-    /*
-#[derive(Copy)]
-struct Vertex {
-    position: [f32; 2],
-    color: [f32; 3],
-}
-
-implement_vertex!(Vertex, Vertex::position, Vertex::color);
-*/
 }
