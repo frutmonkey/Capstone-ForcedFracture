@@ -48,7 +48,7 @@ fn main(){
         gl_Position = matrix * vec4(position, 0.0, 1.0);
         v_tex_coords = tex_coords;
         }
-        ", r"
+        ", r"       
         #version 110
         uniform sampler2D texture;
         varying vec2 v_tex_coords;
@@ -72,20 +72,18 @@ fn main(){
             [0.0, 0.0, 0.0, 1.0f32]
         ], texture: &dan_tex};
 
-    let mut t = 1.0;
+    let mut t = 0.0;
     
     loop{ //play loop
         let vb2 = glium::VertexBuffer::new(&display,
                                            vec![
-                                 Vertex { position: [-1.0, 1.0], tex_coords: [0.0, 0.0] },
-                                 Vertex { position: [-1.0, 1.0], tex_coords: [0.0, 1.0] },
-                                 Vertex { position: [ 1.0, 1.0], tex_coords: [1.0, 1.0] },
-                                 Vertex { position: [ 1.0, -1.0], tex_coords: [1.0, 0.0] }
+                                Vertex { position: [-0.5, 1.0 - t], tex_coords: [0.0, 1.0] },
+                                Vertex { position: [ 0.5, 1.0 - t], tex_coords: [1.0, 1.0] },
+                                Vertex { position: [ 0.5, -0.5 - t], tex_coords: [1.0, 0.0] },
+                                Vertex { position: [-0.5, -0.5 - t], tex_coords: [0.0, 0.0] }
                                            ] );
-
-
         let mut target = display.draw();
-        target.clear_color(0.0, 0.0, 0.0, 0.0);
+        target.clear_color(25.0, 0.0, 0.0, 0.0);
         target.draw(&vb1, &index_buffer, &program, &uni_rock, &std::default::Default::default()).unwrap();
         target.draw(&vb2,&index_buffer,&program, &uni_dan, &std::default::Default::default()).unwrap();
         target.finish();
@@ -96,6 +94,7 @@ fn main(){
                 _ => ()
             }
         }
+        
         t += 0.01;
     }
 }
