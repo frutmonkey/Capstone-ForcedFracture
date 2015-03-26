@@ -8,7 +8,7 @@ use std::io::Cursor;
 
 fn main(){
     use glium::{DisplayBuild, Surface};
-
+    //use glium;
     let display = glutin::WindowBuilder::new()
         .with_dimensions(1024, 768)
         .with_title(format!("Forced Fracture"))
@@ -25,7 +25,7 @@ fn main(){
             tex_coords: [f32; 2],
         }
 
-        implement_vertex!(Vertex, position, tex_coords);
+        implement_vertex(Vertex, position, tex_coords);
         glium::VertexBuffer::new(&display,
                                  vec![
                                  Vertex { position: [-1.0, -1.0], tex_coords: [0.0, 0.0] },
