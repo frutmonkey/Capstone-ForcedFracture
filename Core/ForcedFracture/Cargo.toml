@@ -11,11 +11,11 @@ path = "../FracEngine"
 gl = "*"
 libc = "*"
 glutin = "*"
-#glium = "*"
+glium = "*"
+image = "*"
 
-
-[dependencies.glium]
-git = "https://github.com/tomaka/glium"
+#[dependencies.glium]
+#git = "https://github.com/tomaka/glium"
 
 #[dependencies.glutin]
 #git = "https://github.com/tomaka/glutin"
