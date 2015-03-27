@@ -6,6 +6,11 @@ extern crate image;
 use glium::{DisplayBuild, Surface};
 use std::io::Cursor;
 
+//add my mods here
+mod location;
+mod world;
+mod enitys;
+
 fn main(){
     println!("hello dark and scarry world");
     #[derive(Copy)]
