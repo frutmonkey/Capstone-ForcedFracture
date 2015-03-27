@@ -71,10 +71,10 @@ fn main(){
                                 Vertex { position: [-0.5, -0.5 - t], tex_coords: [0.0, 0.0] }
                                            ] );
         let mut target = display.draw();
-        target.clear_color(25.0, 0.0, 0.0, 0.0);
-        target.draw(&vb1, &index_buffer, &program, &uni_rock, &std::default::Default::default()).unwrap();
-        target.draw(&vb2,&index_buffer,&program, &uni_dan, &std::default::Default::default()).unwrap();
-        target.finish();
+       // target.clear_color(25.0, 0.0, 0.0, 0.0);
+       // target.draw(&vb1, &index_buffer, &program, &uni_rock, &std::default::Default::default()).unwrap();
+       // target.draw(&vb2,&index_buffer,&program, &uni_dan, &std::default::Default::default()).unwrap();
+       // target.finish();
         // polling and handling the events received by the window
         for event in display.poll_events() {
             match event {
