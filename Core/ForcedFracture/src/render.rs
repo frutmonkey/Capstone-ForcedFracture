@@ -1,5 +1,9 @@
 use glium;
 use glutin;
+use enitys::*;
+
+use std::boxed::Box;
+use std::iter::Iterator;
 
 pub struct Render{
     //display: glium::Display,
@@ -8,7 +12,7 @@ pub struct Render{
 }
 
 impl Render {
-    fn new<F>(disp: &F) -> Render where F: glium::backend::Facade {
+    pub fn new<F>(disp: &F) -> Render where F: glium::backend::Facade {
         let prog = glium::Program::from_source(disp, r"
             #version 110
             uniform mat4 matrix;
@@ -34,5 +38,18 @@ impl Render {
             img_shader: prog,
             img_index_org: index_buffer
         }
+    }
+
+    pub fn draw_frame<I: Iterator<Item = Box<Drawable>>>(disp: &glium::backend::glutin_backend::GlutinFacade, things: I)
+        {
+        
+        let mut target = disp.draw();
+
+        for x in things{
+            
+            
+    
+
+        }   
     }
 }
