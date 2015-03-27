@@ -10,6 +10,7 @@ use std::io::Cursor;
 mod location;
 mod world;
 mod enitys;
+mod render;
 
 fn main(){
     println!("hello dark and scarry world");
@@ -43,25 +44,7 @@ fn main(){
 
     let index_buffer = glium::IndexBuffer::new(&display,glium::index::TriangleStrip(vec![1 as u16, 2, 0, 3]));
 
-    let program = glium::Program::from_source(&display, r"
-        #version 110
-        uniform mat4 matrix;
-        attribute vec2 position;
-        attribute vec2 tex_coords;
-        varying vec2 v_tex_coords;
-        void main() {
-        gl_Position = matrix * vec4(position, 0.0, 1.0);
-        v_tex_coords = tex_coords;
-        }
-        ", r"       
-        #version 110
-        uniform sampler2D texture;
-        varying vec2 v_tex_coords;
-        void main() {
-        gl_FragColor = texture2D(texture, v_tex_coords);
-        }
-        ", None).unwrap();
-
+  
     let uni_rock = uniform! {
         matrix: [
             [1.0, 0.0, 0.0, 0.0],
