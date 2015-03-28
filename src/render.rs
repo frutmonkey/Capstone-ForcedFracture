@@ -61,8 +61,8 @@ impl Render {
                 new(disp, vec![
                     BasicVertex::new(Vec2d::new(0.0, h) - offset, Vec2d::new(0.0,1.0)),
                     BasicVertex::new(Vec2d::new(w,h) - offset, Vec2d::new(1.0,1.0)),
-                    BasicVertex::new(Vec2d::new(w,0.0) - offset, Vec2d, Vec2d::new(1.0, 0.0)),
-                    BasicVertex::new(Vec2d::new(0.0,0.0) - offset, Vec2d, Vec2d::new(0.0,0.0)) 
+                    BasicVertex::new(Vec2d::new(w,0.0) - offset, Vec2d::new(1.0, 0.0)),
+                    BasicVertex::new(Vec2d::new(0.0,0.0) - offset, Vec2d::new(0.0,0.0)) 
                     ]);
 
         }   
