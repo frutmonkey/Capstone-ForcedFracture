@@ -1,6 +1,8 @@
 use glium;
+use glium::texture::Texture;
 use glutin;
 use enitys::*;
+use location::*;
 
 use std::boxed::Box;
 use std::iter::Iterator;
@@ -40,16 +42,46 @@ impl Render {
         }
     }
 
-    pub fn draw_frame<I: Iterator<Item = Box<Drawable>>>(disp: &glium::backend::glutin_backend::GlutinFacade, things: I)
-        {
-        
+    pub fn draw_frame<I: Iterator<Item = Box<Drawable>>>
+        (disp: &glium::backend::glutin_backend::GlutinFacade, things: I, camera: Vec2d){
+        #![feature(core)] 
+        use std::num::ToPrimitive; 
+
         let mut target = disp.draw();
 
         for x in things{
+            let img_hight = x.panel().texture.get_height().unwrap().to_f32().unwrap();
+            let h = 1.0f32 / x.size();
+            let w = x.panel().texture.get_width().to_f32().unwrap()
+                / x.size() / img_hight;
             
-            
-    
+            let offset = camera - x.location();
+
+            let ver_buffer = glium::VertexBuffer::
+                new(disp, vec![
+                    BasicVertex::new(Vec2d::new(0.0, h) - offset, Vec2d::new(0.0,1.0)),
+                    BasicVertex::new(Vec2d::new(w,h) - offset, Vec2d::new(1.0,1.0)),
+                    BasicVertex::new(Vec2d::new(w,0.0) - offset, Vec2d, Vec2d::new(1.0, 0.0)),
+                    BasicVertex::new(Vec2d::new(0.0,0.0) - offset, Vec2d, Vec2d::new(0.0,0.0)) 
+                    ]);
 
         }   
+        }
+}
+
+#[derive(Copy)]
+struct BasicVertex {
+    position: [f32; 2],
+    tex_coords: [f32; 2]
+}
+
+impl BasicVertex{
+    pub fn new(pos1: Vec2d, pos2: Vec2d) ->BasicVertex{
+        BasicVertex{
+            position: pos1.to_array(),
+            tex_coords: pos2.to_array()
+        }
     }
 }
+
+implement_vertex!(BasicVertex, position, tex_coords);

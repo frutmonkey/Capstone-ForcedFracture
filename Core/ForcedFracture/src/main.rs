@@ -1,3 +1,4 @@
+#![feature(core)] 
 extern crate glutin;
 #[macro_use]
 extern crate glium;
@@ -11,6 +12,7 @@ mod location;
 mod world;
 mod enitys;
 mod render;
+mod things;
 
 fn main(){
     println!("hello dark and scarry world");

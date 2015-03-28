@@ -1,7 +1,7 @@
 use std::option::{Option};
 use std::boxed::Box;
 use glium::uniforms::Uniforms;
-use location::Vec2d;
+use location::*;
 
 use std::marker::MarkerTrait;
 
@@ -23,7 +23,7 @@ pub trait Enity{
 }
 
 pub trait Drawable{
-    fn panel(&self)-> Uniforms;
+    fn panel(&self)-> ImgData;
     fn location(&self) -> Vec2d;
     fn size(&self) -> f32;
 }
