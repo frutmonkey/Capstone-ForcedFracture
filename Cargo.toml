@@ -1,11 +1,8 @@
 [package]
 
-name = "ForcedFracture"
+name = "forced_fracture"
 version = "0.0.1"
 authors = ["walter"]
-
-[dev-dependencies.FracEngine]
-path = "../FracEngine"
 
 [dependencies]
 gl = "*"
