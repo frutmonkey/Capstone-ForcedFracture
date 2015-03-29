@@ -15,7 +15,6 @@ mod render;
 mod things;
 
 fn main(){
-    println!("hello dark and scarry world");
     #[derive(Copy)]
     struct Vertex {
         position: [f32; 2],
