@@ -5,13 +5,13 @@ use location::*;
 
 use std::marker::MarkerTrait;
 
-pub trait Enity{
+pub trait Enity<'a>{
     fn parent_ID(&self) ->usize;
     fn name(&self) -> str;
     //fn childeren() -> HashMap<usize,&Enity;
     
-    fn draw_handle(&self) -> Option<Box<Drawable>>{
-        None::<Box<Drawable>>
+    fn draw_handle(&self) -> Option<& 'a Drawable>{
+        None::<&Drawable>
     }
 
     fn update_handle(& mut self) -> Option<Box<Updates>>{

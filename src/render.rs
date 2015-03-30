@@ -1,8 +1,11 @@
 use glium;
 use glium::texture::Texture;
+//use glium::uniforms::value::IntoUniformValue;
+use glium::Surface;
 use glutin;
 use enitys::*;
 use location::*;
+use std;
 
 use std::boxed::Box;
 use std::iter::Iterator;
@@ -42,12 +45,14 @@ impl Render {
         }
     }
 
-    pub fn draw_frame<I: Iterator<Item = Box<Drawable>>>
-        (disp: &glium::backend::glutin_backend::GlutinFacade, things: I, camera: Vec2d){
+    pub fn draw_frame<'a, I: Iterator<Item = & 'a Drawable>>
+        (&self, disp: &glium::backend::glutin_backend::GlutinFacade, things: I, camera: &Vec2d)
+    {
         #![feature(core)] 
         use std::num::ToPrimitive; 
 
         let mut target = disp.draw();
+        target.clear_color(25.0, 0.0, 0.0, 0.0);
 
         for x in things{
             let img_hight = x.panel().texture.get_height().unwrap().to_f32().unwrap();
@@ -55,18 +60,24 @@ impl Render {
             let w = x.panel().texture.get_width().to_f32().unwrap()
                 / x.size() / img_hight;
             
-            let offset = camera - x.location();
-
+            let offset = camera - (x.location() / 100.0);
+            
             let ver_buffer = glium::VertexBuffer::
                 new(disp, vec![
-                    BasicVertex::new(Vec2d::new(0.0, h) - offset, Vec2d::new(0.0,1.0)),
-                    BasicVertex::new(Vec2d::new(w,h) - offset, Vec2d::new(1.0,1.0)),
-                    BasicVertex::new(Vec2d::new(w,0.0) - offset, Vec2d::new(1.0, 0.0)),
-                    BasicVertex::new(Vec2d::new(0.0,0.0) - offset, Vec2d::new(0.0,0.0)) 
+                        BasicVertex::new(Vec2d::new(0.0, h) - offset, Vec2d::new(0.0,1.0)),
+                        BasicVertex::new(Vec2d::new(w,h) - offset, Vec2d::new(1.0,1.0)),
+                        BasicVertex::new(Vec2d::new(w,0.0) - offset, Vec2d::new(1.0, 0.0)),
+                        BasicVertex::new(Vec2d::new(0.0,0.0) - offset, Vec2d::new(0.0,0.0)) 
                     ]);
+            let mat = x.panel().matrix;
+            let tex = x.panel().texture;
+            let uni = uniform!{matrix: mat, texture: tex};
+            
+            target.draw(&ver_buffer,&self.img_index_org, &self.img_shader, &uni, &std::default::Default::default()).unwrap();
+        } 
 
-        }   
-        }
+        target.finish();
+    }
 }
 
 #[derive(Copy)]
