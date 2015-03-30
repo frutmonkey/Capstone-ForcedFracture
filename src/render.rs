@@ -25,21 +25,19 @@ impl Render {
             attribute vec2 tex_coords;
             varying vec2 v_tex_coords;
             void main() {
-            gl_Position = matrix * vec4(position, 0.0, 1.0);
-            v_tex_coords = tex_coords;
-            }
-            ", r"       
+                gl_Position = matrix * vec4(position, 0.0, 1.0);
+                v_tex_coords = tex_coords;
+            }", r"       
             #version 110
             uniform sampler2D texture;
             varying vec2 v_tex_coords;
             void main() {
-            gl_FragColor = texture2D(texture, v_tex_coords);
+                gl_FragColor = texture2D(texture, v_tex_coords);
             }", None).unwrap();
 
         let index_buffer = glium::IndexBuffer::new(disp,glium::index::TriangleStrip(vec![1 as u16, 2, 0, 3]));
         
         Render{
-            //display: disp,
             img_shader: prog,
             img_index_org: index_buffer
         }
@@ -59,7 +57,7 @@ impl Render {
             let h = 1.0f32 / x.size();
             let w = x.panel().texture.get_width().to_f32().unwrap()
                 / x.size() / img_hight;
-            
+
             let offset = camera - (x.location() / 100.0);
             
             let ver_buffer = glium::VertexBuffer::
