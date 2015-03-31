@@ -43,10 +43,9 @@ impl Render {
         }
     }
 
-    pub fn draw_frame<'a, I: Iterator<Item = & 'a Drawable>>
-        (&self, disp: &glium::backend::glutin_backend::GlutinFacade, things: I, camera: &Vec2d)
+    pub fn draw_frame//<'a>//, I: Iterator<Item = & 'a Drawable>>
+        (&self, disp: &glium::backend::glutin_backend::GlutinFacade, things: std::slice::Iter<&Drawable>, camera: &Vec2d)
     {
-        #![feature(core)] 
         use std::num::ToPrimitive; 
 
         let mut target = disp.draw();
@@ -57,8 +56,8 @@ impl Render {
             let h = 1.0f32 / x.size();
             let w = x.panel().texture.get_width().to_f32().unwrap()
                 / x.size() / img_hight;
-
-            let offset = camera - (x.location() / 100.0);
+            //let temp : &Vec2d = ref (x.location() / 100.0);
+            let offset = (x.location() / 100.0) -  *camera;
             
             let ver_buffer = glium::VertexBuffer::
                 new(disp, vec![

@@ -6,7 +6,7 @@ use location::*;
 use std::marker::MarkerTrait;
 
 pub trait Enity<'a>{
-    fn parent_ID(&self) ->usize;
+    fn parent_id(&self) ->usize;
     fn name(&self) -> str;
     //fn childeren() -> HashMap<usize,&Enity;
     

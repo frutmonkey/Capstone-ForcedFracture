@@ -6,6 +6,7 @@ extern crate glium;
 extern crate image;
 use glium::{DisplayBuild, Surface};
 use std::io::Cursor;
+//use core::slice::Iter;
 
 //add my mods here
 mod location;
