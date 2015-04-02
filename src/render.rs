@@ -52,9 +52,9 @@ impl Render {
         target.clear_color(25.0, 0.0, 0.0, 0.0);
 
         for x in things{
-            let img_hight = x.panel().texture.get_height().unwrap().to_f32().unwrap();
+            let img_hight = x.panel().pull_texture().get_height().unwrap().to_f32().unwrap();
             let h = 1.0f32 / x.size();
-            let w = x.panel().texture.get_width().to_f32().unwrap()
+            let w = x.panel().pull_texture().get_width().to_f32().unwrap()
                 / x.size() / img_hight;
             //let temp : &Vec2d = ref (x.location() / 100.0);
             let offset = (x.location() / 100.0) -  *camera;
@@ -66,9 +66,9 @@ impl Render {
                         BasicVertex::new(Vec2d::new(w,0.0) - offset, Vec2d::new(1.0, 0.0)),
                         BasicVertex::new(Vec2d::new(0.0,0.0) - offset, Vec2d::new(0.0,0.0)) 
                     ]);
-            let mat = x.panel().matrix;
-            let tex = x.panel().texture;
-            let uni = uniform!{matrix: mat, texture: &tex};
+            let mat = *x.panel().pull_matrix();
+            let tex = x.panel().pull_texture();
+            let uni = uniform!{matrix: mat, texture: tex};
             
             target.draw(&ver_buffer,&self.img_index_org, &self.img_shader, &uni, &std::default::Default::default()).unwrap();
         } 

@@ -51,7 +51,23 @@ impl Vec2d {
     pub fn to_array(self) -> [f32; 2] { [self.x, self.y] }
 }
 
+//#[derive(Clone)]
 pub struct ImgData{
     pub matrix: [[f32; 4]; 4],
     pub texture: glium::texture::CompressedTexture2d
 }
+
+pub trait ImgVal {
+    fn pull_matrix(&self)  -> &[[f32; 4]; 4];
+    fn pull_texture(&self) -> &glium::texture::CompressedTexture2d;
+}
+
+impl ImgVal for ImgData{
+    fn pull_matrix(&self) -> &[[f32; 4]; 4]{
+        &self.matrix
+    }
+    fn pull_texture(&self) -> &glium::texture::CompressedTexture2d{
+        &self.texture
+    }
+}
+

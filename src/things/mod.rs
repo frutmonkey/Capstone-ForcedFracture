@@ -1,1 +1,1 @@
-mod mobs;
+pub mod mobs;

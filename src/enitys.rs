@@ -9,7 +9,7 @@ pub trait Enity<'a>{
     fn name(&self) -> &str;
     //fn childeren() -> HashMap<usize,&Enity;
     
-    fn draw_handle(&self) -> Option<& 'a Drawable>{
+    fn draw_handle(& 'a self) -> Option<& 'a Drawable>{
         None::<&Drawable>
     }
 
@@ -22,7 +22,7 @@ pub trait Enity<'a>{
 }
 
 pub trait Drawable{
-    fn panel(&self)-> ImgData;
+    fn panel(&self)-> &ImgVal;
     fn location(&self) -> Vec2d;
     fn size(&self) -> f32;
 }
