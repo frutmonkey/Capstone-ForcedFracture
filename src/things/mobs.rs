@@ -77,5 +77,5 @@ impl<'a> Drawable for DevDan{
     fn location(&self) -> Vec2d{
         self.pos
     }
-    fn size(&self) -> f32 { 0.25 }
+    fn size(&self) -> f32 { 0.5f32 }
 }

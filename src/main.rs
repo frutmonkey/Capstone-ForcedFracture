@@ -18,11 +18,6 @@ mod enitys;
 mod render;
 mod things;
 
-//static mut display: glutin::WindowBuilder = glutin::WindowBuilder::new();
-        //.with_dimensions(1024, 768)
-        //.with_title(format!("Forced Fracture"))
-        //.build_glium().unwrap();;
-
 fn main(){
 
     let display = glutin::WindowBuilder::new()
@@ -30,7 +25,7 @@ fn main(){
         .with_title(format!("Forced Fracture"))
         .build_glium().unwrap();
     
-    let rendEngine = render::Render::new(&display);
+    let rend_engine = render::Render::new(&display);
 
     let mut world: Vec<Box<enitys::Enity>> = Vec::new();
     let temp :Box<enitys::Enity>= box things::mobs::DevDan::new("Dan".to_string(),Vec2d::new(0.0,0.0),&display);
@@ -57,7 +52,7 @@ fn main(){
         }
 
         let mut target = display.draw();
-        rendEngine.draw_frame(&display, draws.iter(), &camera);
+        rend_engine.draw_frame(&display, draws.iter(), &camera);
 
     }//end main loop
 }
