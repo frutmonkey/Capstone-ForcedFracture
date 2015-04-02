@@ -51,7 +51,7 @@ impl Vec2d {
     pub fn to_array(self) -> [f32; 2] { [self.x, self.y] }
 }
 
-pub struct ImgData<'a>{
+pub struct ImgData{
     pub matrix: [[f32; 4]; 4],
-    pub texture: & 'a glium::texture::CompressedTexture2d
+    pub texture: glium::texture::CompressedTexture2d
 }

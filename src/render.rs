@@ -68,7 +68,7 @@ impl Render {
                     ]);
             let mat = x.panel().matrix;
             let tex = x.panel().texture;
-            let uni = uniform!{matrix: mat, texture: tex};
+            let uni = uniform!{matrix: mat, texture: &tex};
             
             target.draw(&ver_buffer,&self.img_index_org, &self.img_shader, &uni, &std::default::Default::default()).unwrap();
         } 

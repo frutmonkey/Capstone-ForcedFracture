@@ -1,4 +1,5 @@
 #![feature(core)] 
+#![feature(box_syntax)]
 extern crate glutin;
 #[macro_use]
 extern crate glium;
@@ -15,7 +16,13 @@ mod enitys;
 mod render;
 mod things;
 
+//static mut display: glutin::WindowBuilder = glutin::WindowBuilder::new();
+        //.with_dimensions(1024, 768)
+        //.with_title(format!("Forced Fracture"))
+        //.build_glium().unwrap();;
+
 fn main(){
+
     let display = glutin::WindowBuilder::new()
         .with_dimensions(1024, 768)
         .with_title(format!("Forced Fracture"))

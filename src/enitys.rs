@@ -1,13 +1,12 @@
 use std::option::{Option};
 use std::boxed::Box;
-use glium::uniforms::Uniforms;
 use location::*;
 
 use std::marker::MarkerTrait;
 
 pub trait Enity<'a>{
     fn parent_id(&self) ->usize;
-    fn name(&self) -> str;
+    fn name(&self) -> &str;
     //fn childeren() -> HashMap<usize,&Enity;
     
     fn draw_handle(&self) -> Option<& 'a Drawable>{

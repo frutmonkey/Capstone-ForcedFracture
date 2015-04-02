@@ -19,4 +19,47 @@
     //        [0.0, 0.0, 1.0, 0.0],
     //        [0.0, 0.0, 0.0, 1.0f32]
     //    ], texture: &dan_tex};
- 
+
+use glium;
+use std::io::Cursor;
+use std::string::String;
+use location::*;
+use enitys::Enity;
+
+use image;
+struct DevDan{
+       full_img:  ImgData,
+       pos: Vec2d,
+       name: String
+}
+//extern display:glutin::WindowBuilder;
+
+impl<'a> DevDan{
+    
+    pub fn new(in_name: String, start_pos: Vec2d, disp: &glium::backend::glutin_backend::GlutinFacade){
+        let raw_dan = image::load(Cursor::new(&include_bytes!("../../content/textures/actors/Full/DevDan.png")[..]),image::PNG).unwrap();
+        let dan_tex = glium::texture::CompressedTexture2d::new(disp, raw_dan);
+        let composite = ImgData{ matrix: [
+                                [1.0, 0.0, 0.0, 0.0],
+                                [0.0, 1.0, 0.0, 0.0],
+                                [0.0, 0.0, 1.0, 0.0],
+                                [0.0, 0.0, 0.0, 1.0f32] ],
+                                texture: dan_tex };
+
+        DevDan {
+            full_img: composite,
+            pos: start_pos,
+            name : in_name
+        };
+    }
+}
+
+impl<'a> Enity<'a> for DevDan{
+    
+    fn name(&self) -> &str{
+        self.name.as_slice()
+    }
+
+    fn parent_id(&self)-> usize{0}
+
+}
