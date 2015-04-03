@@ -7,7 +7,6 @@ use glium;
 pub struct Vec2d{
     pub x: f32,
     pub y: f32,
-    //pub layer: Option<f32>
 }
 
 impl Vec2d{
