@@ -49,7 +49,7 @@ impl Render {
         use std::num::ToPrimitive; 
 
         let mut target = disp.draw();
-        target.clear_color(25.0, 0.0, 0.0, 0.0);
+        target.clear_color(0.0, 0.0, 0.0, 0.0);
 
         for x in things{
             let img_hight = x.panel().pull_texture().get_height().unwrap().to_f32().unwrap();

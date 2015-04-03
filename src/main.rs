@@ -28,9 +28,12 @@ fn main(){
     let rend_engine = render::Render::new(&display);
 
     let mut world: Vec<Box<enitys::Enity>> = Vec::new();
-    let temp :Box<enitys::Enity>= box things::mobs::DevDan::new("Dan".to_string(),Vec2d::new(0.0,0.0),&display);
-    world.push(temp);
-    //world.push(box things::mobs::DevDan::new(String::from_str("Dan"),Vec2d::new(0.0,0.0),&display));
+    world.push(box things::mobs::DevDan::
+               new("Dan".to_string(),Vec2d::new(0.0,0.0),&display));
+    world.push(box things::mobs::John::
+               new("117".to_string(),Vec2d::new(-50.0,-90.0),&display));
+    world.push(box things::mobs::John::
+               new("104".to_string(),Vec2d::new(-20.0,50.0),&display));
     let mut camera = location::Vec2d::new(0.0,0.0);
 
     loop{ //play loop
