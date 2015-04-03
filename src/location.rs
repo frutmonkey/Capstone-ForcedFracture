@@ -2,6 +2,8 @@
 use std::ops::{Add, Sub, Mul, Div, Neg};
 //use std::num::{NumCast};
 use glium;
+use std;
+use std::iter::Iterator;
 
 #[derive(Copy,Clone,Default)]
 pub struct Vec2d{
@@ -70,3 +72,31 @@ impl ImgVal for ImgData{
     }
 }
 
+pub struct Bound{
+    pos: Vec2d,
+    size: Vec2d
+}
+
+impl Bound{
+
+    pub fn new(pos: Vec2d, size: Vec2d) -> Bound{ Bound{ pos: pos, size: size } }
+
+    pub fn top_right(&self) -> Vec2d{
+        Vec2d{ x: self.pos.x + self.size.x, y: self.pos.y }
+    }
+    pub fn top_left(&self) -> Vec2d {
+        self.pos.clone()
+    }
+    pub fn bot_left(&self) -> Vec2d{
+        Vec2d{ x: self.pos.x, y: self.pos.y - self.size.y}
+    }
+    pub fn bot_right(&self) -> Vec2d{
+        Vec2d{ x: self.pos.x + self.size.x, y: self.pos.y + self.size.y}
+    }
+}
+
+pub struct Atk{
+    range: Bound,
+    force: usize,
+    source: usize
+}

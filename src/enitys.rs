@@ -1,6 +1,9 @@
 use std::option::{Option};
 use std::boxed::Box;
+//use std::slice::Iter;
 use location::*;
+use std::iter::Iterator;
+use std;
 
 use std::marker::MarkerTrait;
 
@@ -27,10 +30,17 @@ pub trait Drawable{
     fn size(&self) -> f32;
 }
 
-pub trait Updates : MarkerTrait{
-
+pub trait Updates{
+    fn update(&self,events: std::slice::Iter<&Event>, sec: f32);
 }
 
-pub trait Combat : MarkerTrait{
+pub trait Combat{
+    fn hp(&self) -> usize;
+    fn take_hit(&self, usize);
+    fn hit_bounds(&self) -> Option<&Bound>;
+    fn atk_bounds(&self) -> Option<(&Atk)>;
+}
 
+pub trait Event:MarkerTrait{
+    
 }
