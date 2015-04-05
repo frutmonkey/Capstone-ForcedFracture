@@ -16,11 +16,11 @@ pub trait Enity<'a>{
         None::<&Drawable>
     }
 
-    fn update_handle(& mut self) -> Option<Box<Updates>>{
-        None::<Box<Updates>>
+    fn update_handle(& mut self) -> Option<& 'a Updates>{
+        None::<&Updates>
     }
-    fn combat_handle(& mut self) -> Option<Box<Combat>>{
-        None::<Box<Combat>>
+    fn combat_handle(& mut self) -> Option<& 'a Combat>{
+        None::<&Combat>
     }
 }
 

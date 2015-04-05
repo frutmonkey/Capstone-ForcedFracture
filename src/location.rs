@@ -78,7 +78,6 @@ pub struct Bound{
 }
 
 impl Bound{
-
     pub fn new(pos: Vec2d, size: Vec2d) -> Bound{ Bound{ pos: pos, size: size } }
 
     pub fn top_right(&self) -> Vec2d{
