@@ -43,7 +43,7 @@ impl Render {
         }
     }
 
-    pub fn draw_frame//<'a>//, I: Iterator<Item = & 'a Drawable>>
+    pub fn draw_frame
         (&self, disp: &glium::backend::glutin_backend::GlutinFacade, things: std::slice::Iter<&Drawable>, camera: &Vec2d)
     {
         use std::num::ToPrimitive; 

@@ -10,12 +10,12 @@ use std::marker::MarkerTrait;
 pub trait Enity<'a>{
     fn parent_id(&self) ->usize;
     fn name(&self) -> &str;
-    //fn childeren() -> HashMap<usize,&Enity;
+    fn ID(&self) -> usize;
+    //fn childeren() -> HashMap<usize,&Enity>;
     
     fn draw_handle(& 'a self) -> Option<& 'a Drawable>{
         None::<&Drawable>
     }
-
     fn update_handle(& mut self) -> Option<& 'a Updates>{
         None::<&Updates>
     }

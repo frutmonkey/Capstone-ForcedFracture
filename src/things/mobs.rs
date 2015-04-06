@@ -3,12 +3,15 @@ use std::io::Cursor;
 use std::string::String;
 use location::*;
 use enitys::*;
-
+use world::*;
+use std::cell::RefCell;
+//use collections::borrow::BorrowMut;
 use image;
 pub struct DevDan{
        full_img: ImgData,
        pos: Vec2d,
-       name: String
+       name: String,
+       id: usize
 }
 //extern display:glutin::WindowBuilder;
 
@@ -23,11 +26,13 @@ impl<'a> DevDan{
                                 [0.0, 0.0, 1.0, 0.0],
                                 [0.0, 0.0, 0.0, 1.0f32] ],
                                 texture: dan_tex };
+        let id = ::root.with(|w| { w.borrow_mut().new_id()});
 
         DevDan {
             full_img: composite,
             pos: start_pos,
-            name : in_name
+            name : in_name,
+            id: id
         }
     }
 }
@@ -36,6 +41,10 @@ impl<'a> Enity<'a> for DevDan{
     
     fn name(&self) -> &str{
         self.name.as_slice()
+    }
+
+    fn ID(&self) -> usize{
+        self.id
     }
 
     fn parent_id(&self)-> usize{0}
@@ -60,12 +69,11 @@ impl<'a> Drawable for DevDan{
 
 
 
-
-
 pub struct John{
      full_img: ImgData,
      pos: Vec2d,
-     name: String
+     name: String,
+     id: usize
 }
 
 impl John{
@@ -82,7 +90,8 @@ impl John{
         John{
             full_img: composite,
             pos: start_pos,
-            name : in_name
+            name : in_name,
+            id: ::root.with(|w| w.borrow_mut().new_id())
         }
     }
 }
@@ -93,6 +102,8 @@ impl <'a> Enity<'a> for John{
     }
 
     fn parent_id(&self) -> usize{ 0 }
+
+    fn ID(&self) -> usize{ self.id }
 
     fn draw_handle(& 'a self) -> Option<& 'a Drawable>{
         let x:& 'a Drawable = self;
@@ -116,7 +127,8 @@ impl<'a> Drawable for John{
 pub struct Rock{
      full_img: ImgData,
      pos: Vec2d,
-     name: String
+     name: String,
+     id: usize
 }
 
 impl Rock{
@@ -133,7 +145,8 @@ impl Rock{
         Rock{
             full_img: composite,
             pos: start_pos,
-            name : in_name
+            name : in_name,
+            id: ::root.with(|w| w.borrow_mut().new_id())
         }
     }
 }
@@ -144,7 +157,8 @@ impl <'a> Enity<'a> for Rock{
     }
 
     fn parent_id(&self) -> usize{ 0 }
-
+    
+    fn ID(&self)-> usize { self.id }
     fn draw_handle(& 'a self) -> Option<& 'a Drawable>{
         let x:& 'a Drawable = self;
         Some(x)
