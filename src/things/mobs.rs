@@ -15,17 +15,19 @@ pub struct DevDan{
 }
 //extern display:glutin::WindowBuilder;
 
-impl<'a> DevDan{
+impl DevDan{
     
-    pub fn new(in_name: String, start_pos: Vec2d, disp: &glium::backend::glutin_backend::GlutinFacade)-> DevDan{
-        let raw_dan = image::load(Cursor::new(&include_bytes!("../../content/textures/actors/Full/DevDan.png")[..]),image::PNG).unwrap();
-        let dan_tex = glium::texture::CompressedTexture2d::new(disp, raw_dan);
+    pub fn new(in_name: String, start_pos: Vec2d)-> DevDan{
+        let raw = image::load(Cursor::new(&include_bytes!("../../content/textures/actors/Full/DevDan.png")[..]),image::PNG).unwrap();
+        let tex;
+        ::root.with(|w| tex = glium::texture::CompressedTexture2d
+            ::new(w.borrow().contex(), raw));
         let composite = ImgData{ matrix: [
                                 [1.0, 0.0, 0.0, 0.0],
                                 [0.0, 1.0, 0.0, 0.0],
                                 [0.0, 0.0, 1.0, 0.0],
                                 [0.0, 0.0, 0.0, 1.0f32] ],
-                                texture: dan_tex };
+                                texture: tex };
         let id = ::root.with(|w| { w.borrow_mut().new_id()});
 
         DevDan {
@@ -37,7 +39,7 @@ impl<'a> DevDan{
     }
 }
 
-impl<'a> Enity<'a> for DevDan{
+impl Enity for DevDan{
     
     fn name(&self) -> &str{
         self.name.as_slice()
@@ -49,13 +51,13 @@ impl<'a> Enity<'a> for DevDan{
 
     fn parent_id(&self)-> usize{0}
     
-    fn draw_handle(& 'a self) -> Option<& 'a Drawable>{
+    fn draw_handle(&self) -> Option<&Drawable>{
         let x:& 'a Drawable = self;
         Some(x)
     }
 }
 
-impl<'a> Drawable for DevDan{
+impl Drawable for DevDan{
     
     fn panel(&self) -> &ImgVal{
        let x: &ImgVal = &self.full_img; 
@@ -77,9 +79,11 @@ pub struct John{
 }
 
 impl John{
-    pub fn new(in_name: String, start_pos: Vec2d, disp: &glium::backend::glutin_backend::GlutinFacade)-> John{
+    pub fn new(in_name: String, start_pos: Vec2d)-> John{
         let raw = image::load(Cursor::new(&include_bytes!("../../content/textures/actors/Full/idle.png")[..]),image::PNG).unwrap();
-        let tex= glium::texture::CompressedTexture2d::new(disp, raw);
+        let tex;
+        ::root.with(|w| tex = glium::texture::CompressedTexture2d
+            ::new(w.borrow().contex(), raw));
         let composite = ImgData{ matrix: [
                                 [1.0, 0.0, 0.0, 0.0],
                                 [0.0, 1.0, 0.0, 0.0],
@@ -96,7 +100,7 @@ impl John{
     }
 }
 
-impl <'a> Enity<'a> for John{
+impl Enity for John{
     fn name(&self)-> &str{
         self.name.as_slice()
     }
@@ -105,13 +109,13 @@ impl <'a> Enity<'a> for John{
 
     fn ID(&self) -> usize{ self.id }
 
-    fn draw_handle(& 'a self) -> Option<& 'a Drawable>{
+    fn draw_handle(& 'a self) -> Option<&Drawable>{
         let x:& 'a Drawable = self;
         Some(x)
     }
 }
 
-impl<'a> Drawable for John{
+impl Drawable for John{
     fn panel(&self) -> &ImgVal{
         let x: &ImgVal = &self.full_img;
         x
@@ -132,9 +136,12 @@ pub struct Rock{
 }
 
 impl Rock{
-     pub fn new(in_name: String, start_pos: Vec2d,disp: &glium::backend::glutin_backend::GlutinFacade)-> Rock{
+     pub fn new(in_name: String, start_pos: Vec2d)-> Rock{
         let raw = image::load(Cursor::new(&include_bytes!("../../content/textures/blocks/surface rock.png")[..]),image::PNG).unwrap();
-        let tex= glium::texture::CompressedTexture2d::new(disp, raw);
+        let tex;
+        ::root.with(|w| tex = glium::texture::CompressedTexture2d
+            ::new(w.borrow().contex(), raw));
+
         let composite = ImgData{ matrix: [
                                 [1.0, 0.0, 0.0, 0.0],
                                 [0.0, 1.0, 0.0, 0.0],

@@ -44,36 +44,38 @@ impl Render {
     }
 
     pub fn draw_frame
-        (&self, disp: &glium::backend::glutin_backend::GlutinFacade, things: std::slice::Iter<&Drawable>, camera: &Vec2d)
+        (&self,things: std::slice::Iter<&Drawable>, camera: &Vec2d)
     {
         use std::num::ToPrimitive; 
+        ::root.with(|w|{
+            let disp = w.borrow().contex();
+            let mut target = disp.draw();
+            target.clear_color(0.0, 0.0, 0.0, 0.0);
 
-        let mut target = disp.draw();
-        target.clear_color(0.0, 0.0, 0.0, 0.0);
+            for x in things{
+                let img_hight = x.panel().pull_texture().get_height().unwrap().to_f32().unwrap();
+                let h = 1.0f32 * x.size();
+                let w = x.panel().pull_texture().get_width().to_f32().unwrap()
+                    * x.size() / img_hight;
 
-        for x in things{
-            let img_hight = x.panel().pull_texture().get_height().unwrap().to_f32().unwrap();
-            let h = 1.0f32 * x.size();
-            let w = x.panel().pull_texture().get_width().to_f32().unwrap()
-                * x.size() / img_hight;
-            //let temp : &Vec2d = ref (x.location() / 100.0);
-            let offset = (x.location() / 100.0) -  *camera;
-            
-            let ver_buffer = glium::VertexBuffer::
-                new(disp, vec![
-                        BasicVertex::new(Vec2d::new(0.0, h) - offset, Vec2d::new(0.0,1.0)),
-                        BasicVertex::new(Vec2d::new(w,h) - offset, Vec2d::new(1.0,1.0)),
-                        BasicVertex::new(Vec2d::new(w,0.0) - offset, Vec2d::new(1.0, 0.0)),
-                        BasicVertex::new(Vec2d::new(0.0,0.0) - offset, Vec2d::new(0.0,0.0)) 
-                    ]);
-            let mat = *x.panel().pull_matrix();
-            let tex = x.panel().pull_texture();
-            let uni = uniform!{matrix: mat, texture: tex};
-            
-            target.draw(&ver_buffer,&self.img_index_org, &self.img_shader, &uni, &std::default::Default::default()).unwrap();
-        } 
+                let offset = (x.location() / 100.0) -  *camera;
+                
+                let ver_buffer = glium::VertexBuffer::
+                    new(disp, vec![
+                            BasicVertex::new(Vec2d::new(0.0, h) - offset, Vec2d::new(0.0,1.0)),
+                            BasicVertex::new(Vec2d::new(w,h) - offset, Vec2d::new(1.0,1.0)),
+                            BasicVertex::new(Vec2d::new(w,0.0) - offset, Vec2d::new(1.0, 0.0)),
+                            BasicVertex::new(Vec2d::new(0.0,0.0) - offset, Vec2d::new(0.0,0.0)) 
+                        ]);
+                let mat = *x.panel().pull_matrix();
+                let tex = x.panel().pull_texture();
+                let uni = uniform!{matrix: mat, texture: tex};
+                
+                target.draw(&ver_buffer,&self.img_index_org, &self.img_shader, &uni, &std::default::Default::default()).unwrap();
+            } 
 
-        target.finish();
+            target.finish();
+        });
     }
 }
 

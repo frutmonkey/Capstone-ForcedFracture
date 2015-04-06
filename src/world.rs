@@ -1,6 +1,7 @@
 use std::collections::VecMap;
 use glium;
 use enitys::*;
+use std::collections::vec_map::Iter;
 
 pub struct World<'a>{
    next_id: usize,
@@ -18,10 +19,10 @@ impl<'a> World<'a> {
     }
 
     pub fn set_context(&mut self, disp: glium::backend::glutin_backend::GlutinFacade){
-        self.gl_contex = disp;
+        self.gl_contex = Some(disp);
     }
     
-    pub fn contex(&'a self) -> &'a glium::backend::glutin_backend::GlutinFacade{
+    pub fn contex(&self) -> &glium::backend::glutin_backend::GlutinFacade{
         let x = self.gl_contex.as_ref().unwrap();
         x
     }
@@ -29,6 +30,8 @@ impl<'a> World<'a> {
     pub fn thing(& 'a self, id : usize) -> & 'a Enity {
         &*self.map[id]
     }
+
+
 
     pub fn add(& mut self, e: Box<Enity<'a>>) {
         let id = e.ID();
@@ -43,4 +46,9 @@ impl<'a> World<'a> {
         self.next_id += 1;
         self.next_id
     }
+
+    pub fn all_the_things(&'a self) -> Iter<Box<Enity>>{
+        self.map.iter()
+    }
+
 }

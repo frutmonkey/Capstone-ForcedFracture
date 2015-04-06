@@ -20,6 +20,7 @@ mod enitys;
 mod render;
 mod things;
 
+
 thread_local!(static root: RefCell<world::World<'static>> = RefCell::new(world::World::new()));
 
 fn main(){
@@ -28,51 +29,58 @@ fn main(){
             .with_dimensions(1024, 768)
             .with_title(format!("Forced Fracture"))
             .build_glium().unwrap();
-        root.with(|w| w.set_context(display));
+        root.with(|w| w.borrow_mut().set_context(display));
     }
     let rend_engine: render::Render;
         
-        root.with(|w| rend_engine = render::Render::new(w.contex()));
+        root.with(|w| rend_engine = render::Render::new(w.borrow().contex()));
 
-    let mut world: Vec<Box<enitys::Enity>> = Vec::new();
-    world.push(box things::mobs::Rock::
-               new("".to_string(), Vec2d::new(-20.1,-1.0)));
-     world.push(box things::mobs::Rock::
-               new("".to_string(), Vec2d::new(78.0,9.0)));
-    world.push(box things::mobs::Rock::
-               new("".to_string(), Vec2d::new(-45.0,45.0)));
-    world.push(box things::mobs::Rock::
-               new("".to_string(), Vec2d::new(23.0,-450.0)));
-    world.push(box things::mobs::DevDan::
-               new("Dan".to_string(),Vec2d::new(0.0,0.0)));
-    world.push(box things::mobs::John::
-               new("117".to_string(),Vec2d::new(-50.0,-70.0)));
-    world.push(box things::mobs::John::
-               new("104".to_string(),Vec2d::new(20.0,50.0)));
+    //let mut world: Vec<Box<enitys::Enity>> = Vec::new();
+    
+    root.with(|w| {
+        let mut world = w.borrow_mut();
+
+        world.add(box things::mobs::Rock::
+                  new("".to_string(), Vec2d::new(-20.1,-1.0)));
+        world.add(box things::mobs::Rock::
+                  new("".to_string(), Vec2d::new(78.0,9.0)));
+        world.add(box things::mobs::Rock::
+                  new("".to_string(), Vec2d::new(-45.0,45.0)));
+        world.add(box things::mobs::Rock::
+                  new("".to_string(), Vec2d::new(23.0,-450.0)));
+        world.add(box things::mobs::DevDan::
+                  new("Dan".to_string(),Vec2d::new(0.0,0.0)));
+        world.add(box things::mobs::John::
+                  new("117".to_string(),Vec2d::new(-50.0,-70.0)));
+        world.add(box things::mobs::John::
+                  new("104".to_string(),Vec2d::new(20.0,50.0)));
+    });
     let mut camera = location::Vec2d::new(0.0,0.0);
 
     loop{ //play loop
         //polling and handling the events received by the window
-        let events;
-        root.with(|w| events = w.contex().poll_events());
-        for event in events{
-            match event {
-                glutin::Event::Closed => return,
-                _ => ()
-            }
-        }
+            //let world = w.borrow();
+            //let events = world.contex().poll_events();
+            //for event in events{
+            //    match event {
+            //        glutin::Event::Closed => return,
+            //        _ => ()
+            //    }
+            //}
 
-        //draw things
-        let mut draws = Vec::new();
-        for x in world.iter(){
-            let temp = x.draw_handle();
-            if let Some(thing) = temp {
-                draws.push(thing);
-            }
-        }
+        root.with(|w|{
+            //draw things
+            let mut draws = Vec::new();
+            //let world_list = w.borrow().all_the_things();
+                //for x in w.borrow().all_the_things(){
+                    //let (key,val) = x;
+                    //let temp = val.draw_handle();
+                    //if let Some(thing) = temp {
+                    //    draws.push(thing);
+                    //}
+                //}
 
-        let mut target = display.draw();
-        rend_engine.draw_frame(&display, draws.iter(), &camera);
-
+            rend_engine.draw_frame(draws.iter(), &camera);
+        });
     }//end main loop
 }

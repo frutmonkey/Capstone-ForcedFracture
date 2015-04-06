@@ -7,19 +7,19 @@ use std;
 
 use std::marker::MarkerTrait;
 
-pub trait Enity<'a>{
+pub trait Enity{
     fn parent_id(&self) ->usize;
     fn name(&self) -> &str;
     fn ID(&self) -> usize;
     //fn childeren() -> HashMap<usize,&Enity>;
     
-    fn draw_handle(& 'a self) -> Option<& 'a Drawable>{
+    fn draw_handle(&self) -> Option<&Drawable>{
         None::<&Drawable>
     }
-    fn update_handle(& mut self) -> Option<& 'a Updates>{
+    fn update_handle(&mut self) -> Option<&Updates>{
         None::<&Updates>
     }
-    fn combat_handle(& mut self) -> Option<& 'a Combat>{
+    fn combat_handle(&mut self) -> Option<&Combat>{
         None::<&Combat>
     }
 }
