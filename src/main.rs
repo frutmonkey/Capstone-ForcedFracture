@@ -1,6 +1,7 @@
 #![feature(core)] 
 #![feature(box_syntax)]
 #![allow(unstable)]
+#![feature(convert)
 #![feature(collections)]
 extern crate glutin;
 #[macro_use]

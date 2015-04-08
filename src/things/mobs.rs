@@ -11,7 +11,8 @@ pub struct DevDan{
        full_img: ImgData,
        pos: Vec2d,
        name: String,
-       id: usize
+       id: usize,
+       velo: Vec2d
 }
 //extern display:glutin::WindowBuilder;
 
@@ -35,7 +36,8 @@ impl DevDan{
             full_img: composite,
             pos: start_pos,
             name : in_name,
-            id: id
+            id: id,
+            velo: Vec2d::new(0.0,0.0);
         }
     }
 }
@@ -70,7 +72,14 @@ impl Drawable for DevDan{
     fn size(&self) -> f32 { 0.25f32 }
 }
 
+impl Updates for DevDan{
+    fn update(&mut self, time: f32){
+        self.pos += velos/time;
+        velos /= 2;
+    }
+}
 
+    
 
 pub struct John{
      full_img: ImgData,
