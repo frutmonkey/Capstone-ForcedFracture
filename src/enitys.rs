@@ -31,7 +31,8 @@ pub trait Drawable{
 }
 
 pub trait Updates{
-    fn update(&self,events: std::slice::Iter<&Event>, sec: f32);
+    fn update(&self,sec: f32);
+    fn change_velo(direc: Vec2d);
 }
 
 pub trait Combat{

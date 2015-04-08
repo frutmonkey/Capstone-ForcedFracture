@@ -28,7 +28,8 @@ impl DevDan{
                                 [0.0, 0.0, 1.0, 0.0],
                                 [0.0, 0.0, 0.0, 1.0f32] ],
                                 texture: tex };
-        let id = ::root.with(|w| { w.borrow_mut().new_id()});
+        //let id = ::root.with(|w| { w.borrow_mut().new_id()});
+        let id = 115;
 
         DevDan {
             full_img: composite,

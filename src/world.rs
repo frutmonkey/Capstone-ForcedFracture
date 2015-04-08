@@ -1,7 +1,7 @@
 use std::collections::VecMap;
 use glium;
 use enitys::*;
-use std::collections::vec_map::Iter;
+use std::collections::vec_map::IterMut;
 
 pub struct World{
    next_id: usize,
@@ -45,8 +45,9 @@ impl World {
         self.next_id
     }
 
-    pub fn all_the_things(&self) -> Iter<Box<Enity>>{
-        self.map.iter()
+    pub fn all_the_things<'a>(& 'a mut self) -> IterMut<'a,Box<Enity>>{
+        let temp: IterMut<'a,Box<Enity>> = self.map.iter_mut();
+        temp
     }
 
 }

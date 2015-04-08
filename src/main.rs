@@ -26,18 +26,17 @@ thread_local!(static root: RefCell<world::World> = RefCell::new(world::World::ne
 fn main(){
     let x = init();
 
-    //let mut world: Vec<Box<enitys::Enity>> = Vec::new();
     setup();
 
     run(&x);
 }
 
 fn init()-> render::Render{
-let display = glutin::WindowBuilder::new()
-            .with_dimensions(1024, 768)
-            .with_title(format!("Forced Fracture"))
-            .build_glium().unwrap();
-        root.with(|w| w.borrow_mut().set_context(display));
+    let display = glutin::WindowBuilder::new()
+        .with_dimensions(1024, 768)
+        .with_title(format!("Forced Fracture"))
+        .build_glium().unwrap();
+    root.with(|w| w.borrow_mut().set_context(display));
 
     let x =root.with(
         |w| render::Render::new(w.borrow().contex()));
@@ -46,30 +45,20 @@ let display = glutin::WindowBuilder::new()
 
 
 fn setup(){
-    println!("test");
     let a = box things::mobs::Rock::
-                  new("".to_string(), Vec2d::new(-20.1,-1.0));
-
-println!("a");
+        new("".to_string(), Vec2d::new(-20.1,-1.0));
     let b = box things::mobs::Rock::
-                  new("".to_string(), Vec2d::new(78.0,9.0));
-println!("b");
+        new("".to_string(), Vec2d::new(78.0,9.0));
     let c = box things::mobs::Rock::
-                  new("".to_string(), Vec2d::new(-45.0,45.0));
-println!("c");
+        new("".to_string(), Vec2d::new(-45.0,45.0));
     let d = box things::mobs::Rock::
-                  new("".to_string(), Vec2d::new(23.0,-450.0));
-println!("d");
+        new("".to_string(), Vec2d::new(23.0,-450.0));
     let e = box things::mobs::DevDan::
-                  new("Dan".to_string(),Vec2d::new(0.0,0.0));
-println!("e");
+        new("Dan".to_string(),Vec2d::new(0.0,0.0));
     let f = box things::mobs::John::
-                  new("117".to_string(),Vec2d::new(-50.0,-70.0));
-println!("f");
+        new("117".to_string(),Vec2d::new(-50.0,-70.0));
     let g = box things::mobs::John::
-                  new("104".to_string(),Vec2d::new(20.0,50.0));
-    
-println!("g");
+        new("104".to_string(),Vec2d::new(20.0,50.0));
     root.with(|w| {
         let mut world = w.borrow_mut();
 
@@ -85,35 +74,81 @@ println!("g");
 }
 
 fn run(rend_engine: &render::Render){
-//loop{ //play loop
-       //polling and handling the events received by the window
-            //let world = w.borrow();
-            //let events = world.contex().poll_events();
-            //for event in events{
-            //    match event {
-            //        glutin::Event::Closed => return,
-            //        _ => ()
-            //    }
-            //}
-println!("preloop");
-        let mut camera = location::Vec2d::new(0.0,0.0);
-        root.with(|w|{
+    //loop{ //play loop
+    //polling and handling the events received by the window
+    //let world = w.borrow();
+
+    println!("preloop");
+    let mut camera = location::Vec2d::new(0.0,0.0);
+    root.with(|w|{
         loop{
-            println!("loop");
-            let world = w.borrow();
+            win_events();
+            let world = w.borrow_mut();
             let mut draws = Vec::new();
+            let mut ups = Vec::new();
             //draw things
-            //let world = w;
-            //let ww = world.borrow();
+            ////let world = w;
+            /////let ww = world.borrow();
             for (key,val) in world.all_the_things(){
-                //let (key,val) = x;
+                /////let (key,val) = x;
                 let temp = val.draw_handle();
                 if let Some(thing) = temp {
                     draws.push(thing);
-                    }
                 }
-        rend_engine.draw_frame(draws.iter(), &camera);
-    }//end main loop
+                let temp2 = val.update_handle();
+                if let Some(thing) = temp2 {
+                    ups.push(thing);
+                }
+            }
+            rend_engine.draw_frame(draws.iter(), &camera);
+            for up in ups.iter(){
+                up.update(0.01f32);
+            }
+        }//end main loop
     })
-
 }
+
+fn win_events(){
+    use glutin::VirtualKeyCode;
+    root.with(|w|{
+        let world = w.borrow();
+        let events = world.contex().poll_events();
+        for event in events{
+            match event {
+                glutin::Event::Closed => panic!(),
+                glutin::Event::KeyboardInput(ele_state,scan_code, vkey_code) 
+                    => match vkey_code {
+                        Some(x) => match x {
+                            VirtualKeyCode::A => {
+                                println!("things");
+                                //root.with(|w| {
+                                //    let ref temp =*w.borrow_mut();
+                                //    let mut player = temp.thing(115); 
+                                //});
+                                world_mut(|w| {
+                                    let t = w.thing(115).ID();
+                                          println!("{}",t);
+                                })
+
+                            },
+                            _ => {}
+                        },
+                        None => ()
+                    },
+                    _ => ()
+            }
+        }
+    });
+}
+
+
+pub fn with<A,F>(mut f:F) -> A 
+where F: FnMut(&world::World) -> A{
+    root.with(|w| f(& *w.borrow()))
+}
+
+pub fn world_mut<A,F>(mut f:F) -> A
+where F: FnMut(&mut world::World) -> A{
+    root.with(|w| f(&mut *w.borrow_mut()))
+}
+
