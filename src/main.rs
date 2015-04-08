@@ -11,7 +11,9 @@ use glium::{DisplayBuild, Surface};
 use std::io::Cursor;
 use std::cell::RefCell;
 use location::Vec2d;
+use enitys::{Enity, Updates};
 //use core::slice::Iter;
+use std::collections::VecMap;
 
 //add my mods here
 mod location;
@@ -24,11 +26,62 @@ mod things;
 thread_local!(static root: RefCell<world::World> = RefCell::new(world::World::new()));
 
 fn main(){
-    let x = init();
+    use things::mobs::*;
+    let rend_engine= init();
 
-    setup();
+    let mut world : VecMap<Box<Enity>>= VecMap::new();
 
-    run(&x);
+    {
+        let a = box things::mobs::Rock::
+            new("".to_string(), Vec2d::new(-20.1,-1.0));
+        let b = box things::mobs::Rock::
+            new("".to_string(), Vec2d::new(78.0,9.0));
+        let c = box things::mobs::Rock::
+            new("".to_string(), Vec2d::new(-45.0,45.0));
+        let d = box things::mobs::Rock::
+            new("".to_string(), Vec2d::new(23.0,-450.0));
+        let e = box things::mobs::DevDan::
+            new("Dan".to_string(),Vec2d::new(0.0,0.0));
+        let f = box things::mobs::John::
+            new("117".to_string(),Vec2d::new(-50.0,-70.0));
+        let g = box things::mobs::John::
+            new("104".to_string(),Vec2d::new(20.0,50.0));
+        world.insert(a.ID(),a);
+        world.insert(b.ID(),b);
+        world.insert(c.ID(),c);
+        world.insert(e.ID(),e);
+        world.insert(f.ID(),f);
+        world.insert(d.ID(),d);
+        world.insert(g.ID(),g);
+    }
+    
+    let mut camera = location::Vec2d::new(0.0,0.0);
+    loop{
+        win_events();
+        let mut draws = Vec::new();
+        //draw things
+        ////let world = w;
+        /////let ww = world.borrow();
+        {
+            let mut ups = Vec::new();
+            for (key,val) in world.iter_mut(){
+                if let Some(thin) = val.update_handle(){
+                    ups.push(thin);
+                }
+            }
+            for up in ups.iter(){
+                up.update(0.01f32);
+            }
+        }
+
+        for (key,val) in world.iter(){
+            if let Some(thing) = val.draw_handle(){
+                draws.push(thing);
+            }
+        }
+
+        rend_engine.draw_frame(draws.iter(), &camera);
+    }//end main loop
 }
 
 fn init()-> render::Render{
@@ -43,8 +96,7 @@ fn init()-> render::Render{
     x
 }
 
-
-fn setup(){
+fn setup(world: &mut VecMap<Box<enitys::Enity>>){
     let a = box things::mobs::Rock::
         new("".to_string(), Vec2d::new(-20.1,-1.0));
     let b = box things::mobs::Rock::
@@ -59,18 +111,13 @@ fn setup(){
         new("117".to_string(),Vec2d::new(-50.0,-70.0));
     let g = box things::mobs::John::
         new("104".to_string(),Vec2d::new(20.0,50.0));
-    root.with(|w| {
-        let mut world = w.borrow_mut();
-
-        world.add(a);
-        world.add(b);
-        world.add(c);
-        world.add(d);
-        world.add(e);
-        world.add(f);
-        world.add(g);
-    });
-    println!("post");
+    world.insert(a.ID(),a);
+    world.insert(b.ID(),b);
+    world.insert(c.ID(),c);
+    world.insert(e.ID(),e);
+    world.insert(f.ID(),f);
+    world.insert(d.ID(),d);
+    world.insert(g.ID(),g);
 }
 
 fn run(rend_engine: &render::Render){
@@ -78,34 +125,6 @@ fn run(rend_engine: &render::Render){
     //polling and handling the events received by the window
     //let world = w.borrow();
 
-    println!("preloop");
-    let mut camera = location::Vec2d::new(0.0,0.0);
-    root.with(|w|{
-        loop{
-            win_events();
-            let world = w.borrow_mut();
-            let mut draws = Vec::new();
-            let mut ups = Vec::new();
-            //draw things
-            ////let world = w;
-            /////let ww = world.borrow();
-            for (key,val) in world.all_the_things(){
-                /////let (key,val) = x;
-                let temp = val.draw_handle();
-                if let Some(thing) = temp {
-                    draws.push(thing);
-                }
-                let temp2 = val.update_handle();
-                if let Some(thing) = temp2 {
-                    ups.push(thing);
-                }
-            }
-            rend_engine.draw_frame(draws.iter(), &camera);
-            for up in ups.iter(){
-                up.update(0.01f32);
-            }
-        }//end main loop
-    })
 }
 
 fn win_events(){
@@ -125,10 +144,10 @@ fn win_events(){
                                 //    let ref temp =*w.borrow_mut();
                                 //    let mut player = temp.thing(115); 
                                 //});
-                                world_mut(|w| {
-                                    let t = w.thing(115).ID();
-                                          println!("{}",t);
-                                })
+                                // world_mut(|w| {
+                                //     let t = w.thing(115).ID();
+                                //           println!("{}",t);
+                                // })
 
                             },
                             _ => {}

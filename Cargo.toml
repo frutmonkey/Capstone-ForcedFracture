@@ -10,6 +10,7 @@ libc = "*"
 glutin = "*"
 glium = "*"
 image = "*"
+#time = "*"
 
 #[dependencies.glium]
 #git = "https://github.com/tomaka/glium"

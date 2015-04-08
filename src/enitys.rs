@@ -32,7 +32,7 @@ pub trait Drawable{
 
 pub trait Updates{
     fn update(&self,sec: f32);
-    fn change_velo(direc: Vec2d);
+    fn change_velo(&self,direc: Vec2d);
 }
 
 pub trait Combat{

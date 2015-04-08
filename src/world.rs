@@ -45,9 +45,9 @@ impl World {
         self.next_id
     }
 
-    pub fn all_the_things<'a>(& 'a mut self) -> IterMut<'a,Box<Enity>>{
-        let temp: IterMut<'a,Box<Enity>> = self.map.iter_mut();
-        temp
-    }
+    //pub fn all_the_things<'a>(& 'a mut self) -> IterMut<'a,Box<Enity>>{
+    //    let temp: IterMut<'a,Box<Enity>> = self.map.iter_mut();
+    //    temp
+    //}
 
 }
