@@ -3,14 +3,14 @@ use glium;
 use enitys::*;
 use std::collections::vec_map::Iter;
 
-pub struct World<'a>{
+pub struct World{
    next_id: usize,
-   map: VecMap<Box<Enity<'a>>>,
+   map: VecMap<Box<Enity>>,
    gl_contex: Option<glium::backend::glutin_backend::GlutinFacade>
 }
 
-impl<'a> World<'a> {
-    pub fn new() -> World<'a> {
+impl World {
+    pub fn new() -> World{
         World {
             next_id: 0,
             map: VecMap::new(),
@@ -27,15 +27,13 @@ impl<'a> World<'a> {
         x
     }
     
-    pub fn thing(& 'a self, id : usize) -> & 'a Enity {
-        &*self.map[id]
+    pub fn thing(&mut self, id : usize) -> &mut Enity {
+        &mut *self.map[id]
     }
 
-
-
-    pub fn add(& mut self, e: Box<Enity<'a>>) {
+    pub fn add(& mut self, e: Box<Enity>) {
         let id = e.ID();
-        self.map[id] = e;
+        self.map.insert(id, e);
     }
 
     pub fn remove(&mut self, id : usize){
@@ -47,7 +45,7 @@ impl<'a> World<'a> {
         self.next_id
     }
 
-    pub fn all_the_things(&'a self) -> Iter<Box<Enity>>{
+    pub fn all_the_things(&self) -> Iter<Box<Enity>>{
         self.map.iter()
     }
 

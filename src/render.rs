@@ -48,7 +48,8 @@ impl Render {
     {
         use std::num::ToPrimitive; 
         ::root.with(|w|{
-            let disp = w.borrow().contex();
+            let world = w.borrow();
+            let disp = world.contex();
             let mut target = disp.draw();
             target.clear_color(0.0, 0.0, 0.0, 0.0);
 

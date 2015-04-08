@@ -19,8 +19,8 @@ impl DevDan{
     
     pub fn new(in_name: String, start_pos: Vec2d)-> DevDan{
         let raw = image::load(Cursor::new(&include_bytes!("../../content/textures/actors/Full/DevDan.png")[..]),image::PNG).unwrap();
-        let tex;
-        ::root.with(|w| tex = glium::texture::CompressedTexture2d
+        
+        let tex = ::root.with(|w| glium::texture::CompressedTexture2d
             ::new(w.borrow().contex(), raw));
         let composite = ImgData{ matrix: [
                                 [1.0, 0.0, 0.0, 0.0],
@@ -52,7 +52,7 @@ impl Enity for DevDan{
     fn parent_id(&self)-> usize{0}
     
     fn draw_handle(&self) -> Option<&Drawable>{
-        let x:& 'a Drawable = self;
+        let x:&Drawable = self;
         Some(x)
     }
 }
@@ -81,8 +81,7 @@ pub struct John{
 impl John{
     pub fn new(in_name: String, start_pos: Vec2d)-> John{
         let raw = image::load(Cursor::new(&include_bytes!("../../content/textures/actors/Full/idle.png")[..]),image::PNG).unwrap();
-        let tex;
-        ::root.with(|w| tex = glium::texture::CompressedTexture2d
+        let tex = ::root.with(|w| glium::texture::CompressedTexture2d
             ::new(w.borrow().contex(), raw));
         let composite = ImgData{ matrix: [
                                 [1.0, 0.0, 0.0, 0.0],
@@ -109,8 +108,8 @@ impl Enity for John{
 
     fn ID(&self) -> usize{ self.id }
 
-    fn draw_handle(& 'a self) -> Option<&Drawable>{
-        let x:& 'a Drawable = self;
+    fn draw_handle(&self) -> Option<&Drawable>{
+        let x:&Drawable = self;
         Some(x)
     }
 }
@@ -138,8 +137,7 @@ pub struct Rock{
 impl Rock{
      pub fn new(in_name: String, start_pos: Vec2d)-> Rock{
         let raw = image::load(Cursor::new(&include_bytes!("../../content/textures/blocks/surface rock.png")[..]),image::PNG).unwrap();
-        let tex;
-        ::root.with(|w| tex = glium::texture::CompressedTexture2d
+        let tex = ::root.with(|w| glium::texture::CompressedTexture2d
             ::new(w.borrow().contex(), raw));
 
         let composite = ImgData{ matrix: [
@@ -158,7 +156,7 @@ impl Rock{
     }
 }
 
-impl <'a> Enity<'a> for Rock{
+impl Enity for Rock{
     fn name(&self)-> &str{
         self.name.as_slice()
     }
@@ -166,13 +164,13 @@ impl <'a> Enity<'a> for Rock{
     fn parent_id(&self) -> usize{ 0 }
     
     fn ID(&self)-> usize { self.id }
-    fn draw_handle(& 'a self) -> Option<& 'a Drawable>{
-        let x:& 'a Drawable = self;
+    fn draw_handle(&self) -> Option<&Drawable>{
+        let x:&Drawable = self;
         Some(x)
     }
 }
 
-impl<'a> Drawable for Rock{
+impl Drawable for Rock{
     fn panel(&self) -> &ImgVal{
         let x: &ImgVal = &self.full_img;
         x
