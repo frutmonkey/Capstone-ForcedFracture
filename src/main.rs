@@ -1,7 +1,6 @@
 #![feature(core)] 
 #![feature(box_syntax)]
 #![allow(unstable)]
-#![feature(convert)
 #![feature(collections)]
 extern crate glutin;
 #[macro_use]
@@ -15,6 +14,7 @@ use location::Vec2d;
 use enitys::{Enity, Updates};
 //use core::slice::Iter;
 use std::collections::VecMap;
+use things::mobs::DevDan;
 
 //add my mods here
 mod location;
@@ -41,8 +41,9 @@ fn main(){
             new("".to_string(), Vec2d::new(-45.0,45.0));
         let d = box things::mobs::Rock::
             new("".to_string(), Vec2d::new(23.0,-450.0));
-        let e = box things::mobs::DevDan::
+        let mut e = box things::mobs::DevDan::
             new("Dan".to_string(),Vec2d::new(0.0,0.0));
+        e.update_handle().unwrap().update(0.001);
         let f = box things::mobs::John::
             new("117".to_string(),Vec2d::new(-50.0,-70.0));
         let g = box things::mobs::John::
@@ -60,21 +61,13 @@ fn main(){
     loop{
         win_events();
         let mut draws = Vec::new();
-        //draw things
-        ////let world = w;
-        /////let ww = world.borrow();
         {
-            let mut ups = Vec::new();
             for (key,val) in world.iter_mut(){
-                if let Some(thin) = val.update_handle(){
-                    ups.push(thin);
+                if let Some(thing) = val.update_handle(){
+                    thing.update(0.1f32);
                 }
             }
-            for up in ups.iter(){
-                up.update(0.01f32);
-            }
         }
-
         for (key,val) in world.iter(){
             if let Some(thing) = val.draw_handle(){
                 draws.push(thing);

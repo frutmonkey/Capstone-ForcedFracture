@@ -37,7 +37,7 @@ impl DevDan{
             pos: start_pos,
             name : in_name,
             id: id,
-            velo: Vec2d::new(0.0,0.0);
+            velo: Vec2d::new(500.0,0.0)
         }
     }
 }
@@ -58,6 +58,11 @@ impl Enity for DevDan{
         let x:&Drawable = self;
         Some(x)
     }
+
+    fn update_handle(&mut self) -> Option<&mut Updates>{
+        let x: &mut Updates = self;
+        Some(x)
+    }
 }
 
 impl Drawable for DevDan{
@@ -73,9 +78,9 @@ impl Drawable for DevDan{
 }
 
 impl Updates for DevDan{
-    fn update(&mut self, time: f32){
-        self.pos += velos/time;
-        velos /= 2;
+    fn update(&mut self,time: f32){
+        self.pos = self.pos + (self.velo * time);
+        self.velo = self.velo/2.0;
     }
 }
 

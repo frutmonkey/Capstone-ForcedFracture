@@ -16,11 +16,11 @@ pub trait Enity{
     fn draw_handle(&self) -> Option<&Drawable>{
         None::<&Drawable>
     }
-    fn update_handle(&mut self) -> Option<&Updates>{
-        None::<&Updates>
+    fn update_handle(&mut self) -> Option<&mut Updates>{
+        None::<&mut Updates>
     }
-    fn combat_handle(&mut self) -> Option<&Combat>{
-        None::<&Combat>
+    fn combat_handle(&mut self) -> Option<&mut Combat>{
+        None::<&mut Combat>
     }
 }
 
@@ -31,8 +31,8 @@ pub trait Drawable{
 }
 
 pub trait Updates{
-    fn update(&self,sec: f32);
-    fn change_velo(&self,direc: Vec2d){}
+    fn update(&mut self,sec: f32);
+    fn change_velo(&mut self,direc: Vec2d){}
 }
 
 pub trait Combat{
