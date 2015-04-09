@@ -59,7 +59,7 @@ impl Render {
                 let w = x.panel().pull_texture().get_width().to_f32().unwrap()
                     * x.size() / img_hight;
 
-                let offset = (x.location() / 100.0) -  *camera;
+                let offset = (x.location() / 100.0) -  *camera /100.0;
                 
                 let ver_buffer = glium::VertexBuffer::
                     new(disp, vec![

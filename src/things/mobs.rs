@@ -80,7 +80,11 @@ impl Drawable for DevDan{
 impl Updates for DevDan{
     fn update(&mut self,time: f32){
         self.pos = self.pos + (self.velo * time);
-        self.velo = self.velo/2.0;
+        self.velo = Vec2d::new(0.0,0.0);
+    }
+    
+    fn change_velo(&mut self, vel: Vec2d){
+        self.velo = self.velo + vel;
     }
 }
 

@@ -5,7 +5,7 @@
 extern crate glutin;
 #[macro_use]
 extern crate glium;
-
+extern crate time;
 extern crate image;
 use glium::{DisplayBuild, Surface};
 use std::io::Cursor;
@@ -15,6 +15,8 @@ use enitys::{Enity, Updates};
 //use core::slice::Iter;
 use std::collections::VecMap;
 use things::mobs::DevDan;
+use std::num::ToPrimitive; 
+
 
 //add my mods here
 mod location;
@@ -43,7 +45,6 @@ fn main(){
             new("".to_string(), Vec2d::new(23.0,-450.0));
         let mut e = box things::mobs::DevDan::
             new("Dan".to_string(),Vec2d::new(0.0,0.0));
-        e.update_handle().unwrap().update(0.001);
         let f = box things::mobs::John::
             new("117".to_string(),Vec2d::new(-50.0,-70.0));
         let g = box things::mobs::John::
@@ -56,15 +57,55 @@ fn main(){
         world.insert(d.ID(),d);
         world.insert(g.ID(),g);
     }
-    
+    let mut last_time = time::now();
     let mut camera = location::Vec2d::new(0.0,0.0);
     loop{
+        let span = last_time - time::now();
+        let up_time: f32 = span.num_milliseconds().to_f32().unwrap() / 1000.0f32;
+        {
+            use std::collections::VecMap;
+            use glutin::VirtualKeyCode;
+            root.with(|w|{
+                let ww = w.borrow();
+                let events = ww.contex().poll_events();
+                for event in events{
+                    match event {
+                        glutin::Event::Closed => panic!(),
+                        glutin::Event::KeyboardInput(ele_state,scan_code, vkey_code) 
+                            => match vkey_code {
+                                Some(x) => match x {
+                                    VirtualKeyCode::A => {
+                                        world.get_mut(&115).unwrap().update_handle().unwrap().change_velo(Vec2d::new(-1.0,0.0));
+                                    },
+                                    VirtualKeyCode::D => {
+                                        world.get_mut(&115).unwrap().update_handle().unwrap().change_velo(Vec2d::new(1.0,0.0));
+                                    },
+                                    VirtualKeyCode::W => {
+                                        world.get_mut(&115).unwrap().update_handle().unwrap().change_velo(Vec2d::new(0.0,1.0));
+                                    },
+                                    VirtualKeyCode::S => {
+                                        world.get_mut(&115).unwrap().update_handle().unwrap().change_velo(Vec2d::new(0.0,-1.0));
+                                    },
+                                    VirtualKeyCode::C => {
+                                        camera = world.get(&115).unwrap().draw_handle().unwrap().location();
+                                    },
+
+                                    _ => {}
+                                },
+                                None => ()
+                            },
+                            _ => ()
+                    }
+                }
+            });
+        }
+
         win_events();
         let mut draws = Vec::new();
         {
             for (key,val) in world.iter_mut(){
                 if let Some(thing) = val.update_handle(){
-                    thing.update(0.1f32);
+                    thing.update(up_time);
                 }
             }
         }
@@ -134,15 +175,6 @@ fn win_events(){
                         Some(x) => match x {
                             VirtualKeyCode::A => {
                                 println!("things");
-                                //root.with(|w| {
-                                //    let ref temp =*w.borrow_mut();
-                                //    let mut player = temp.thing(115); 
-                                //});
-                                // world_mut(|w| {
-                                //     let t = w.thing(115).ID();
-                                //           println!("{}",t);
-                                // })
-
                             },
                             _ => {}
                         },
