@@ -80,7 +80,7 @@ impl Render {
     }
 }
 
-#[derive(Copy)]
+#[derive(Copy,Clone)]
 struct BasicVertex {
     position: [f32; 2],
     tex_coords: [f32; 2]
